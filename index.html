@@ -123,7 +123,7 @@
       .qr-box { width: 220px; height: 220px; }
     }
 
-    /* 📌 Scan & Pay button सिर्फ mobile पर दिखे */
+    /* 📌 Scan & Pay button सिर्फ mobile पर दिखेगा */
     @media (min-width: 768px) {
       .scan-btn { display: none; }
     }
@@ -135,53 +135,16 @@
 
     <div class="instructions">
       <p>1 Open the app linked to your UPI</p>
-      <p>2 Click "Scan & Pay" to view QR code</p>
-      <p>3 Scan the QR with your UPI app</p>
-      <p>4 Enter your own amount & approve</p>
+      <p>2 Scan the QR code OR click Scan & Pay</p>
+      <p>3 Enter amount and approve payment</p>
     </div>
 
     <div class="qr-wrap">
       <div class="qr-box">
-        <!-- 🔴 यहाँ अपनी QR image का नाम या path डालें (जैसे qr.jpeg या images/qr.png या कोई online URL) -->
-        <img id="qr.jpeg" src="qr.jpeg" alt="QR code for payment">
+        <!-- यहाँ आपकी QR image fix रहेगी -->
+        <img id="qrImage" src="qr.jpeg" alt="QR code for payment">
       </div>
     </div>
 
     <!-- ✅ Scan & Pay button (Only Mobile) -->
-    <button class="scan-btn" id="scanBtn">📱 Scan & Pay</button>
-
-    <div class="apps-row">
-      <img src="bhim.png" alt="BHIM">
-      <img src="g.png" alt="Google Pay">
-      <img src="p.png" alt="PhonePe">
-      <img src="w.png" alt="WhatsApp">
-      <img src="paytm.png" alt="Paytm">
-    </div>
-
-    <a class="support-link" href="#" role="link">See all supported apps</a>
-
-    <div style="text-align:center; margin-top: 20px;">
-      <button class="download-btn" id="downloadBtn">Download QR</button>
-    </div>
-  </div>
-
-  <script>
-    // ✅ QR Download button
-    document.getElementById("downloadBtn").addEventListener("click", function () {
-      const element = document.getElementById("cardToDownload");
-      html2canvas(element).then(function (canvas) {
-        const link = document.createElement("a");
-        link.download = "upi-card.png";
-        link.href = canvas.toDataURL("image/png");
-        link.click();
-      });
-    });
-
-    // ✅ Scan & Pay button (Open your fixed QR image)
-    document.getElementById("scanBtn").addEventListener("click", function () {
-      const qrImg = document.getElementById("qrImage").src;
-      window.open(qrImg, "_blank"); // 👉 हमेशा वही QR image खुलेगी
-    });
-  </script>
-</body>
-</html>
+    <button class="scan-btn" id="scanBtn">📱 Scan & Pay
