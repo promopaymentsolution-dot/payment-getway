@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>UPI to Pay</title>
+  <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      background: #fafafa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 24px;
+    }
+
+    .card {
+      width: 420px;
+      max-width: 96%;
+      background: #fff;
+      border: 1px solid #e6e6e6;
+      border-radius: 10px;
+      padding: 22px;
+      box-shadow: 0 6px 18px rgba(15, 15, 15, 0.06);
+      text-align: left;
+    }
+
+    .title {
+      font-size: 26px;
+      font-weight: 700;
+      color: #000;
+      margin-bottom: 14px;
+    }
+
+    .instructions {
+      font-size: 17px;
+      color: #111;
+      line-height: 1.6;
+      margin-bottom: 18px;
+    }
+    .instructions p { margin: 6px 0; }
+
+    .qr-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .qr-box {
+      width: 260px;
+      height: 260px;
+      background: #fff;
+      border-radius: 6px;
+      border: 1px solid #eee;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .qr-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .scan-btn, .download-btn {
+      display: block;
+      width: 100%;
+      margin: 10px auto;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .scan-btn {
+      background: #28a745;
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(40, 167, 69, 0.18);
+    }
+
+    .download-btn {
+      background: #1266d3;
+      color: #fff;
+      box-shadow: 0 4px 10px rgba(18, 102, 211, 0.18);
+    }
+
+    .apps-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 14px;
+      flex-wrap: wrap;
+    }
+
+    .apps-row img {
+      height: 30px;
+      width: auto;
+      display: inline-block;
+    }
+
+    .support-link {
+      display: block;
+      text-align: center;
+      margin-top: 10px;
+      color: #1266d3;
+      text-decoration: none;
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    @media (max-width: 460px) {
+      .qr-box { width: 220px; height: 220px; }
+    }
+
+    /* 📌 Scan & Pay button सिर्फ mobile पर दिखेगा */
+    @media (min-width: 768px) {
+      .scan-btn { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card" id="cardToDownload">
+    <div class="title">Use UPI to pay</div>
+
+    <div class="instructions">
+      <p>1 Open the app linked to your UPI</p>
+      <p>2 Scan the QR code</p>
+      <p>3 Approve your charge to complete transaction</p>
+    </div>
+
+    <div class="qr-wrap">
+      <div class="qr-box">
+        <img id="qrImage" src="qr.jpeg" alt="QR code for payment">
+      </div>
+    </div>
+
+    <!-- ✅ Scan & Pay button (Only Mobile) -->
+    <button class="scan-btn" id="scanBtn">📱 Scan & Pay</button>
+
+    <div class="apps-row">
+      <img src="bhim.png" alt="BHIM">
+      <img src="g.png" alt="Google Pay">
+      <img src="p.png" alt="PhonePe">
+      <img src="w.png" alt="WhatsApp">
+      <img src="paytm.png" alt="Paytm">
+    </div>
+
+    <a class="support-link" href="#" role="link">See all supported apps</a>
+
+    <div style="text-align:center; margin-top: 20px;">
+      <button class="download-btn" id="downloadBtn">Download QR</button>
+    </div>
+  </div>
+
+  <script>
+    // ✅ QR Download button
+    document.getElementById("downloadBtn").addEventListener("click", function () {
+      const element = document.getElementById("cardToDownload");
+      html2canvas(element).then(function (canvas) {
+        const link = document.createElement("a");
+        link.download = "upi-card.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+    });
+
+    // ✅ Scan & Pay button (Mobile only UPI intent link)
+    document.getElementById("scanBtn").addEventListener("click", function () {
+      // यहाँ पर अपना UPI link डालें
+      window.location.href = "upi://pay?pa=yourupi@upi&pn=YourName&am=100&cu=INR";
+    });
+  </script>
+</body>
+</html>
