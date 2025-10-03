@@ -135,13 +135,14 @@
 
     <div class="instructions">
       <p>1 Open the app linked to your UPI</p>
-      <p>2 Scan the QR code</p>
-      <p>3 Approve your charge to complete transaction</p>
+      <p>2 Click "Scan & Pay" to view QR code</p>
+      <p>3 Scan the QR with your UPI app</p>
+      <p>4 Enter your own amount & approve</p>
     </div>
 
     <div class="qr-wrap">
       <div class="qr-box">
-        <!-- 🔴 यहाँ अपनी QR image का नाम या path डालें (जैसे qr.jpeg या images/qr.png या कोई URL) -->
+        <!-- 🔴 यहाँ अपनी QR image का नाम या path डालें (जैसे qr.jpeg या images/qr.png या कोई online URL) -->
         <img id="qr.jpeg" src="qr.jpeg" alt="QR code for payment">
       </div>
     </div>
@@ -176,10 +177,10 @@
       });
     });
 
-    // ✅ Scan & Pay button (QR image open only on mobile)
+    // ✅ Scan & Pay button (Open your fixed QR image)
     document.getElementById("scanBtn").addEventListener("click", function () {
       const qrImg = document.getElementById("qrImage").src;
-      window.open(qrImg, "_blank"); // 👉 QR Image नई tab में खुलेगी
+      window.open(qrImg, "_blank"); // 👉 हमेशा वही QR image खुलेगी
     });
   </script>
 </body>
