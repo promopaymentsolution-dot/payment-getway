@@ -5,146 +5,101 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>UPI to Pay</title>
   <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: "Helvetica Neue", Arial, sans-serif;
-      background: #fafafa;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 24px;
-    }
-
-    .card {
-      width: 420px;
-      max-width: 96%;
-      background: #fff;
-      border: 1px solid #e6e6e6;
-      border-radius: 10px;
-      padding: 22px;
-      box-shadow: 0 6px 18px rgba(15, 15, 15, 0.06);
-      text-align: left;
-    }
-
-    .title {
-      font-size: 26px;
-      font-weight: 700;
-      color: #000;
-      margin-bottom: 14px;
-    }
-
-    .instructions {
-      font-size: 17px;
-      color: #111;
-      line-height: 1.6;
-      margin-bottom: 18px;
-    }
-    .instructions p { margin: 6px 0; }
-
-    .qr-wrap {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .qr-box {
-      width: 260px;
-      height: 260px;
-      background: #fff;
-      border-radius: 6px;
-      border: 1px solid #eee;
-      overflow: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .qr-box img {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-
-    .scan-btn, .download-btn {
-      display: block;
-      width: 100%;
-      margin: 10px auto;
-      border: none;
-      padding: 12px;
-      border-radius: 6px;
-      font-size: 16px;
-      cursor: pointer;
-      font-weight: 600;
-    }
-
-    .scan-btn {
-      background: #28a745;
-      color: #fff;
-      box-shadow: 0 4px 10px rgba(40, 167, 69, 0.18);
-    }
-
-    .download-btn {
-      background: #1266d3;
-      color: #fff;
-      box-shadow: 0 4px 10px rgba(18, 102, 211, 0.18);
-    }
-
-    .apps-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      margin-top: 14px;
-      flex-wrap: wrap;
-    }
-
-    .apps-row img {
-      height: 30px;
-      width: auto;
-      display: inline-block;
-    }
-
-    .support-link {
-      display: block;
-      text-align: center;
-      margin-top: 10px;
-      color: #1266d3;
-      text-decoration: none;
-      font-size: 15px;
-      font-weight: 500;
-    }
-
-    @media (max-width: 460px) {
-      .qr-box { width: 220px; height: 220px; }
-    }
-
-    /* 📌 Scan & Pay button सिर्फ mobile पर दिखेगा */
-    @media (min-width: 768px) {
-      .scan-btn { display: none; }
-    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:Arial,Helvetica,sans-serif;background:#fafafa;display:flex;align-items:center;justify-content:center;min-height:100vh;padding:24px}
+    .card{width:420px;max-width:96%;background:#fff;border:1px solid #e6e6e6;border-radius:10px;padding:22px;box-shadow:0 6px 18px rgba(0,0,0,0.06);text-align:left}
+    .title{font-size:26px;font-weight:700;margin-bottom:14px}
+    .instructions{font-size:17px;color:#111;line-height:1.6;margin-bottom:18px}
+    .qr-box{width:260px;height:260px;background:#fff;border-radius:6px;border:1px solid #eee;overflow:hidden;display:flex;justify-content:center;align-items:center;margin-bottom:12px}
+    .qr-box img{width:100%;height:100%;object-fit:contain}
+    .scan-btn,.download-btn{display:block;width:100%;margin:10px auto;border:none;padding:12px;border-radius:6px;font-size:16px;cursor:pointer;font-weight:600}
+    .scan-btn{background:#28a745;color:#fff}
+    .download-btn{background:#1266d3;color:#fff}
+    .apps-row{display:flex;gap:12px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+    .apps-row img{height:30px}
+    .support-link{display:block;text-align:center;margin-top:10px;color:#1266d3;text-decoration:none;font-weight:500}
+    @media(min-width:768px){.scan-btn{display:none}}
+    .modal{position:fixed;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;padding:20px;z-index:9999}
+    .modal .modal-content{background:#fff;padding:18px;border-radius:10px;max-width:360px;width:100%;text-align:center}
+    .modal .modal-content img{width:100%;height:auto;max-height:70vh;object-fit:contain}
+    .close-btn{margin-top:12px;padding:8px 12px;border-radius:6px;border:none;background:#444;color:#fff;cursor:pointer}
   </style>
 </head>
 <body>
   <div class="card" id="cardToDownload">
     <div class="title">Use UPI to pay</div>
-
     <div class="instructions">
       <p>1 Open the app linked to your UPI</p>
-      <p>2 Scan the QR code OR click Scan & Pay</p>
+      <p>2 Click "Scan & Pay" to open UPI apps OR scan the QR manually</p>
       <p>3 Enter amount and approve payment</p>
     </div>
 
-    <div class="qr-wrap">
-      <div class="qr-box">
-        <!-- यहाँ आपकी QR image fix रहेगी -->
-        <img id="qrImage" src="qr.jpeg" alt="QR code for payment">
-      </div>
+    <div class="qr-box">
+      <!-- 🔴 यहाँ आपकी QR image लगी रहेगी -->
+      <img id="qrImage" src="https://i.postimg.cc/g0jsJf7H/upi-qr-2.jpg" alt="QR code for payment">
     </div>
 
-    <!-- ✅ Scan & Pay button (Only Mobile) -->
-    <button class="scan-btn" id="scanBtn">📱 Scan & Pay
+    <!-- Only mobile -->
+    <button class="scan-btn" id="scanBtn">📱 Scan & Pay</button>
+
+    <div class="apps-row">
+      <img src="bhim.png" alt="BHIM">
+      <img src="g.png" alt="Google Pay">
+      <img src="p.png" alt="PhonePe">
+      <img src="w.png" alt="WhatsApp">
+      <img src="paytm.png" alt="Paytm">
+    </div>
+
+    <a class="support-link" href="#">See all supported apps</a>
+
+    <div style="text-align:center;margin-top:20px">
+      <button class="download-btn" id="downloadBtn">Download QR</button>
+    </div>
+  </div>
+
+  <!-- Modal: अगर intent/fallback काम न करे तो user QR manually scan करे -->
+  <div class="modal" id="qrModal" aria-hidden="true">
+    <div class="modal-content">
+      <p style="margin-bottom:8px;font-weight:600">Scan this QR with your UPI app</p>
+      <img id="modalQrImg" src="https://i.postimg.cc/g0jsJf7H/upi-qr-2.jpg" alt="QR for payment">
+      <div>
+        <button class="close-btn" id="closeModal">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const upiLink = "upi://pay?pa=Q937770318@ybl&pn=PaymentReceiver&cu=INR";
+    const intentLink = "intent://pay?pa=Q937770318@ybl&pn=PaymentReceiver&cu=INR#Intent;scheme=upi;end";
+    const scanBtn = document.getElementById("scanBtn");
+    const qrModal = document.getElementById("qrModal");
+    const closeModal = document.getElementById("closeModal");
+    const qrImage = document.getElementById("qrImage");
+
+    function showModal(){qrModal.style.display="flex";qrModal.setAttribute("aria-hidden","false")}
+    function hideModal(){qrModal.style.display="none";qrModal.setAttribute("aria-hidden","true")}
+    closeModal.addEventListener("click", hideModal);
+
+    scanBtn.addEventListener("click", function () {
+      try{window.location.href=intentLink}catch(err){}
+      setTimeout(function(){
+        try{window.location.href=upiLink}catch(err){}
+        setTimeout(showModal,900);
+      },900);
+    });
+
+    document.getElementById("downloadBtn").addEventListener("click", function () {
+      const element = document.getElementById("cardToDownload");
+      html2canvas(element).then(function (canvas) {
+        const link = document.createElement("a");
+        link.download = "upi-card.png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+    });
+
+    qrImage.addEventListener("click", showModal);
+  </script>
+</body>
+</html>
